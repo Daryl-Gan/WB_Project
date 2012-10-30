@@ -24,7 +24,7 @@ N, Z,
 PCwrite, AddrSel, MemRead,
 MemWrite, IRload, R1Sel, MDRload,
 R1R2Load, ALU1, ALU2, ALUop,
-ALUOutWrite, RFWrite, RegIn, FlagWrite//, state
+ALUOutWrite, RFWrite, RegIn, FlagWrite, counter//, state
 );
 	input	[3:0] instr;
 	input	N, Z;
@@ -32,19 +32,22 @@ ALUOutWrite, RFWrite, RegIn, FlagWrite//, state
 	output	PCwrite, AddrSel, MemRead, MemWrite, IRload, R1Sel, MDRload;
 	output	R1R2Load, ALU1, ALUOutWrite, RFWrite, RegIn, FlagWrite;
 	output	[2:0] ALU2, ALUop;
+	output reg	[15:0] counter = 0;
 	//output	[3:0] state;
 	
-	reg [3:0]	state;
+	reg [4:0]	state;
 	reg	PCwrite, AddrSel, MemRead, MemWrite, IRload, R1Sel, MDRload;
 	reg	R1R2Load, ALU1, ALUOutWrite, RFWrite, RegIn, FlagWrite;
 	reg	[2:0] ALU2, ALUop;
+	reg 	StopFlag = 0;
 	
 	
 	// state constants (note: asn = add/sub/nand, asnsh = add/sub/nand/shift)
-	parameter [3:0] reset_s = 0, c1 = 1, c2 = 2, c3_asn = 3,
+	parameter [4:0] reset_s = 0, c1 = 1, c2 = 2, c3_asn = 3,
 					c4_asnsh = 4, c3_shift = 5, c3_ori = 6,
 					c4_ori = 7, c5_ori = 8, c3_load = 9, c4_load = 10,
-					c3_store = 11, c3_bpz = 12, c3_bz = 13, c3_bnz = 14;
+					c3_store = 11, c3_bpz = 12, c3_bz = 13, c3_bnz = 14,
+					c3_nop = 15, c3_stop = 16;
 	
 	// determines the next state based upon the current state; supports
 	// asynchronous reset
@@ -65,6 +68,8 @@ ALUOutWrite, RFWrite, RegIn, FlagWrite//, state
 								else if( instr == 4'b1101 ) state = c3_bpz;
 								else if( instr == 4'b0101 ) state = c3_bz;
 								else if( instr == 4'b1001 ) state = c3_bnz;
+								else if( instr == 4'b1010 ) state = c3_nop;
+								else if( instr == 4'b0001 ) state = c3_stop;
 								else state = 0;
 							end
 				c3_asn:		state = c4_asnsh;	// cycle 3: ADD SUB NAND
@@ -79,7 +84,11 @@ ALUOutWrite, RFWrite, RegIn, FlagWrite//, state
 				c3_bpz:		state = c1; 		// cycle 3: BPZ
 				c3_bz:		state = c1; 		// cycle 3: BZ
 				c3_bnz:		state = c1; 		// cycle 3: BNZ
+				c3_nop:		state = c1;			// cycle 3: NOP
+				c3_stop:		state = c3_stop;	// cycle 3: STOP
 			endcase
+			if (!StopFlag)
+				counter = counter + 1;
 		end
 	end
 
@@ -397,6 +406,10 @@ ALUOutWrite, RFWrite, RegIn, FlagWrite//, state
 					RFWrite = 0;
 					RegIn = 0;
 					FlagWrite = 0;
+				end
+			c3_stop: 
+				begin
+					StopFlag = 1;
 				end
 			default:	//control = 19'b0000000000000000000;
 				begin

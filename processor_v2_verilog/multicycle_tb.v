@@ -14,11 +14,14 @@ module multicycle_tb;
 	wire	[7:0] LEDG;
 	wire	[17:0] LEDR;
 
-	wire	[1:0] KEY, SW;
+	wire	[1:0] KEY;
+	wire	[2:0] SW;
 	
 	reg reset; // active-low
 	reg clock;
-
+	
+	reg displayCount;
+	
 	multicycle DUT(
 					SW, KEY, HEX0, HEX1, HEX2, HEX3,
 					HEX4, HEX5, HEX6, HEX7, LEDG, LEDR
@@ -28,12 +31,16 @@ module multicycle_tb;
 		clock = 1'b0;
 		reset = 1'b1; 
 		#41
-		reset = 1'b0; 
+		reset = 1'b0;
+		/********test*********/
+		displayCount = 1'b1;
 	end
 	
 	always #10 clock = ~clock;
 
 	assign	KEY[1] = clock;
 	assign	KEY[0] =  ~reset; // KEY is active high
+	
+	assign	SW[2] =  displayCount;
 
 endmodule

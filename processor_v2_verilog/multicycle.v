@@ -31,7 +31,8 @@ HEX4, HEX5, HEX6, HEX7, LEDG, LEDR
 );
 
 // ------------------------ PORT declaration ------------------------ //
-input	[1:0] KEY, SW;
+input	[1:0] KEY; 
+input	[2:0] SW;
 output	[6:0] HEX0, HEX1, HEX2, HEX3;
 output	[6:0] HEX4, HEX5, HEX6, HEX7;
 output	[7:0] LEDG;
@@ -50,6 +51,8 @@ wire	[2:0] ALUOp, ALU2;
 wire	[1:0] R1_in;
 wire	Nwire, Zwire;
 reg		N, Z;
+wire	[15:0] counter;
+reg   [7:0] HexInput0, HexInput1, HexInput2, HexInput3;
 
 // ------------------------ Input Assignment ------------------------ //
 assign	clock = KEY[1];
@@ -58,7 +61,7 @@ assign	reset =  ~KEY[0]; // KEY is active high
 
 // ------------------- DE2 compatible HEX display ------------------- //
 HEXs	HEX_display(
-	.in0(reg0),.in1(reg1),.in2(reg2),.in3(reg3),
+	.in0(HexInput0),.in1(HexInput1),.in2(HexInput2),.in3(HexInput3),
 	.out0(HEX0),.out1(HEX1),.out2(HEX2),.out3(HEX3),
 	.out4(HEX4),.out5(HEX5),.out6(HEX6),.out7(HEX7)
 );
@@ -85,7 +88,7 @@ FSM		Control(
 	.PCwrite(PCWrite),.AddrSel(AddrSel),.MemRead(MemRead),.MemWrite(MemWrite),
 	.IRload(IRLoad),.R1Sel(R1Sel),.MDRload(MDRLoad),.R1R2Load(R1R2Load),
 	.ALU1(ALU1),.ALUOutWrite(ALUOutWrite),.RFWrite(RFWrite),.RegIn(RegIn),
-	.FlagWrite(FlagWrite),.ALU2(ALU2),.ALUop(ALUOp)
+	.FlagWrite(FlagWrite),.ALU2(ALU2),.ALUop(ALUOp),.counter(counter)
 );
 
 memory	DataMem(
@@ -180,6 +183,25 @@ if (FlagWrite)
 	begin
 	N <= Nwire;
 	Z <= Zwire;
+	end
+end
+
+//Determine whether to display the counter value or the register values
+always@(*)
+begin
+	if (SW[2])
+	begin
+		HexInput0 = counter[7:0];
+		HexInput1 = counter[15:7];
+		HexInput2 = 0;
+		HexInput3 = 0;
+	end
+	else
+	begin
+		HexInput0 = reg0;
+		HexInput1 = reg1;
+		HexInput2 = reg2;
+		HexInput3 = reg3;
 	end
 end
 

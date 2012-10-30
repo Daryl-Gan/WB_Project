@@ -2,21 +2,23 @@ library verilog;
 use verilog.vl_types.all;
 entity FSM is
     generic(
-        reset_s         : vl_logic_vector(3 downto 0) := (Hi0, Hi0, Hi0, Hi0);
-        c1              : vl_logic_vector(3 downto 0) := (Hi0, Hi0, Hi0, Hi1);
-        c2              : vl_logic_vector(3 downto 0) := (Hi0, Hi0, Hi1, Hi0);
-        c3_asn          : vl_logic_vector(3 downto 0) := (Hi0, Hi0, Hi1, Hi1);
-        c4_asnsh        : vl_logic_vector(3 downto 0) := (Hi0, Hi1, Hi0, Hi0);
-        c3_shift        : vl_logic_vector(3 downto 0) := (Hi0, Hi1, Hi0, Hi1);
-        c3_ori          : vl_logic_vector(3 downto 0) := (Hi0, Hi1, Hi1, Hi0);
-        c4_ori          : vl_logic_vector(3 downto 0) := (Hi0, Hi1, Hi1, Hi1);
-        c5_ori          : vl_logic_vector(3 downto 0) := (Hi1, Hi0, Hi0, Hi0);
-        c3_load         : vl_logic_vector(3 downto 0) := (Hi1, Hi0, Hi0, Hi1);
-        c4_load         : vl_logic_vector(3 downto 0) := (Hi1, Hi0, Hi1, Hi0);
-        c3_store        : vl_logic_vector(3 downto 0) := (Hi1, Hi0, Hi1, Hi1);
-        c3_bpz          : vl_logic_vector(3 downto 0) := (Hi1, Hi1, Hi0, Hi0);
-        c3_bz           : vl_logic_vector(3 downto 0) := (Hi1, Hi1, Hi0, Hi1);
-        c3_bnz          : vl_logic_vector(3 downto 0) := (Hi1, Hi1, Hi1, Hi0)
+        reset_s         : vl_logic_vector(4 downto 0) := (Hi0, Hi0, Hi0, Hi0, Hi0);
+        c1              : vl_logic_vector(4 downto 0) := (Hi0, Hi0, Hi0, Hi0, Hi1);
+        c2              : vl_logic_vector(4 downto 0) := (Hi0, Hi0, Hi0, Hi1, Hi0);
+        c3_asn          : vl_logic_vector(4 downto 0) := (Hi0, Hi0, Hi0, Hi1, Hi1);
+        c4_asnsh        : vl_logic_vector(4 downto 0) := (Hi0, Hi0, Hi1, Hi0, Hi0);
+        c3_shift        : vl_logic_vector(4 downto 0) := (Hi0, Hi0, Hi1, Hi0, Hi1);
+        c3_ori          : vl_logic_vector(4 downto 0) := (Hi0, Hi0, Hi1, Hi1, Hi0);
+        c4_ori          : vl_logic_vector(4 downto 0) := (Hi0, Hi0, Hi1, Hi1, Hi1);
+        c5_ori          : vl_logic_vector(4 downto 0) := (Hi0, Hi1, Hi0, Hi0, Hi0);
+        c3_load         : vl_logic_vector(4 downto 0) := (Hi0, Hi1, Hi0, Hi0, Hi1);
+        c4_load         : vl_logic_vector(4 downto 0) := (Hi0, Hi1, Hi0, Hi1, Hi0);
+        c3_store        : vl_logic_vector(4 downto 0) := (Hi0, Hi1, Hi0, Hi1, Hi1);
+        c3_bpz          : vl_logic_vector(4 downto 0) := (Hi0, Hi1, Hi1, Hi0, Hi0);
+        c3_bz           : vl_logic_vector(4 downto 0) := (Hi0, Hi1, Hi1, Hi0, Hi1);
+        c3_bnz          : vl_logic_vector(4 downto 0) := (Hi0, Hi1, Hi1, Hi1, Hi0);
+        c3_nop          : vl_logic_vector(4 downto 0) := (Hi0, Hi1, Hi1, Hi1, Hi1);
+        c3_stop         : vl_logic_vector(4 downto 0) := (Hi1, Hi0, Hi0, Hi0, Hi0)
     );
     port(
         reset           : in     vl_logic;
@@ -38,7 +40,8 @@ entity FSM is
         ALUOutWrite     : out    vl_logic;
         RFWrite         : out    vl_logic;
         RegIn           : out    vl_logic;
-        FlagWrite       : out    vl_logic
+        FlagWrite       : out    vl_logic;
+        counter         : out    vl_logic_vector(15 downto 0)
     );
     attribute mti_svvh_generic_type : integer;
     attribute mti_svvh_generic_type of reset_s : constant is 2;
@@ -56,4 +59,6 @@ entity FSM is
     attribute mti_svvh_generic_type of c3_bpz : constant is 2;
     attribute mti_svvh_generic_type of c3_bz : constant is 2;
     attribute mti_svvh_generic_type of c3_bnz : constant is 2;
+    attribute mti_svvh_generic_type of c3_nop : constant is 2;
+    attribute mti_svvh_generic_type of c3_stop : constant is 2;
 end FSM;
