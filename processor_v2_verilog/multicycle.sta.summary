@@ -1,0 +1,77 @@
+------------------------------------------------------------
+TimeQuest Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow Model Setup 'KEY[1]'
+Slack : -6.362
+TNS   : -367.865
+
+Type  : Slow Model Setup 'FSM:Control|state.c3_stop'
+Slack : -1.868
+TNS   : -18.768
+
+Type  : Slow Model Setup 'FSM:Control|state.c3_nop'
+Slack : -0.375
+TNS   : -0.375
+
+Type  : Slow Model Hold 'KEY[1]'
+Slack : -2.440
+TNS   : -18.499
+
+Type  : Slow Model Hold 'FSM:Control|state.c3_nop'
+Slack : -0.114
+TNS   : -0.114
+
+Type  : Slow Model Hold 'FSM:Control|state.c3_stop'
+Slack : -0.008
+TNS   : -0.008
+
+Type  : Slow Model Minimum Pulse Width 'KEY[1]'
+Slack : -2.000
+TNS   : -335.222
+
+Type  : Slow Model Minimum Pulse Width 'FSM:Control|state.c3_nop'
+Slack : 0.500
+TNS   : 0.000
+
+Type  : Slow Model Minimum Pulse Width 'FSM:Control|state.c3_stop'
+Slack : 0.500
+TNS   : 0.000
+
+Type  : Fast Model Setup 'KEY[1]'
+Slack : -2.268
+TNS   : -130.334
+
+Type  : Fast Model Setup 'FSM:Control|state.c3_stop'
+Slack : -0.390
+TNS   : -1.975
+
+Type  : Fast Model Setup 'FSM:Control|state.c3_nop'
+Slack : 0.139
+TNS   : 0.000
+
+Type  : Fast Model Hold 'KEY[1]'
+Slack : -1.489
+TNS   : -14.693
+
+Type  : Fast Model Hold 'FSM:Control|state.c3_nop'
+Slack : -0.042
+TNS   : -0.042
+
+Type  : Fast Model Hold 'FSM:Control|state.c3_stop'
+Slack : 0.124
+TNS   : 0.000
+
+Type  : Fast Model Minimum Pulse Width 'KEY[1]'
+Slack : -2.000
+TNS   : -335.222
+
+Type  : Fast Model Minimum Pulse Width 'FSM:Control|state.c3_nop'
+Slack : 0.500
+TNS   : 0.000
+
+Type  : Fast Model Minimum Pulse Width 'FSM:Control|state.c3_stop'
+Slack : 0.500
+TNS   : 0.000
+
+------------------------------------------------------------

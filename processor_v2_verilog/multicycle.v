@@ -53,7 +53,7 @@ wire	Nwire, Zwire;
 reg		N, Z;
 wire	[15:0] counter;
 reg   [7:0] HexInput0, HexInput1, HexInput2, HexInput3;
-
+wire	[7:0] MEMwire_pc;
 // ------------------------ Input Assignment ------------------------ //
 assign	clock = KEY[1];
 assign	reset =  ~KEY[0]; // KEY is active high
@@ -91,9 +91,9 @@ FSM		Control(
 	.FlagWrite(FlagWrite),.ALU2(ALU2),.ALUop(ALUOp),.counter(counter)
 );
 
-memory	DataMem(
+memory	DualMem(
 	.MemRead(MemRead),.wren(MemWrite),.clock(clock),
-	.address(AddrWire),.data(R1wire),.q(MEMwire)
+	.data(R1wire),.q(MEMwire),.q_pc(MEMwire_pc),.address(R2wire),.address_pc(PCwire)
 );
 
 ALU		ALU(
@@ -110,7 +110,7 @@ RF		RF_block(
 
 register_8bit	IR_reg(
 	.clock(clock),.aclr(reset),.enable(IRLoad),
-	.data(MEMwire),.q(IR)
+	.data(MEMwire_pc),.q(IR)
 );
 
 register_8bit	MDR_reg(
@@ -143,10 +143,10 @@ mux2to1_2bit		R1Sel_mux(
 	.sel(R1Sel),.result(R1_in)
 );
 
-mux2to1_8bit 		AddrSel_mux(
-	.data0x(R2wire),.data1x(PCwire),
-	.sel(AddrSel),.result(AddrWire)
-);
+//mux2to1_8bit 		AddrSel_mux(
+//	.data0x(R2wire),.data1x(PCwire),
+//	.sel(AddrSel),.result(AddrWire)
+//);
 
 mux2to1_8bit 		RegMux(
 	.data0x(ALUOut),.data1x(MDRwire),
@@ -189,10 +189,10 @@ end
 //Determine whether to display the counter value or the register values
 always@(*)
 begin
-	if (SW[2])
+	if (SW[2] == 1'b1)
 	begin
 		HexInput0 = counter[7:0];
-		HexInput1 = counter[15:7];
+		HexInput1 = counter[15:8];
 		HexInput2 = 0;
 		HexInput3 = 0;
 	end

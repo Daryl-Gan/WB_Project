@@ -12,26 +12,30 @@
 // Altera or its authorized distributors.  Please refer to the 
 // applicable agreement for further details.
 
-// PROGRAM		"Quartus II 32-bit"
-// VERSION		"Version 11.1 Build 259 01/25/2012 Service Pack 2 SJ Web Edition"
-// CREATED		"Tue Oct 30 12:04:43 2012"
+// PROGRAM		"Quartus II 64-Bit"
+// VERSION		"Version 11.1 Build 259 01/25/2012 Service Pack 2 SJ Full Version"
+// CREATED		"Wed Oct 31 15:35:27 2012"
 
 module memory(
-	wren,
 	clock,
 	MemRead,
+	wren,
 	address,
+	address_pc,
 	data,
-	q
+	q,
+	q_pc
 );
 
 
-input wire	wren;
 input wire	clock;
 input wire	MemRead;
+input wire	wren;
 input wire	[7:0] address;
+input wire	[7:0] address_pc;
 input wire	[7:0] data;
 output wire	[7:0] q;
+output wire	[7:0] q_pc;
 
 wire	SYNTHESIZED_WIRE_0;
 wire	[0:7] SYNTHESIZED_WIRE_1;
@@ -42,12 +46,16 @@ assign	SYNTHESIZED_WIRE_1 = 0;
 
 
 
-DataMemory	b2v_inst(
-	.wren(wren),
+DualMem	b2v_inst(
+	.wren_a(wren),
+	
 	.clock(SYNTHESIZED_WIRE_0),
-	.address(address),
-	.data(data),
-	.q(SYNTHESIZED_WIRE_2));
+	.address_a(address),
+	.address_b(address_pc),
+	.data_a(data),
+	
+	.q_a(SYNTHESIZED_WIRE_2),
+	.q_b(q_pc));
 
 assign	SYNTHESIZED_WIRE_0 =  ~clock;
 

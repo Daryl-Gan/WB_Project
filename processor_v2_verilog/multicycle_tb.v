@@ -33,7 +33,7 @@ module multicycle_tb;
 		#41
 		reset = 1'b0;
 		/********test*********/
-		displayCount = 1'b1;
+		//displayCount = 1'b1;
 	end
 	
 	always #10 clock = ~clock;
@@ -41,6 +41,6 @@ module multicycle_tb;
 	assign	KEY[1] = clock;
 	assign	KEY[0] =  ~reset; // KEY is active high
 	
-	assign	SW[2] =  displayCount;
+	//assign	SW[2] =  displayCount;
 
 endmodule

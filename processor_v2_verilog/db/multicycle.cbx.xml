@@ -1,5 +1,7 @@
 <?xml version="1.0" ?>
 <LOG_ROOT>
 	<PROJECT NAME="multicycle">
+		<CBX_INST_ENTRY INSTANCE_NAME="|multicycle|memory:DualMem|DualMem:inst|altsyncram:altsyncram_component" CBX_FILE_NAME="altsyncram_lv82.tdf"/>
+		<CBX_INST_ENTRY INSTANCE_NAME="|multicycle|memory:DualMem|mux2to1:inst3|lpm_mux:lpm_mux_component" CBX_FILE_NAME="mux_smc.tdf"/>
 	</PROJECT>
 </LOG_ROOT>
